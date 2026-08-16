@@ -1,0 +1,52 @@
+name: Repository safety
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  initialization-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Require repository policy files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f README.md
+          test -f LICENSE
+          test -f SECURITY.md
+          test -f CONTRIBUTING.md
+          test -f docs/TRUST-MODEL.md
+
+      - name: Reject tracked signing secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden_files="$(git ls-files '*.pem' '*.key' '*.p12' '*.pfx')"
+          if [[ -n "$forbidden_files" ]]; then
+            echo "Signing-key file types must not be tracked:"
+            echo "$forbidden_files"
+            exit 1
+          fi
+
+          if git grep -n -I -E -- 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY' -- .; then
+            echo "Private-key material detected in tracked content."
+            exit 1
+          fi
+
+      - name: Prevent premature production catalog publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -e catalog.json ]]; then
+            echo "catalog.json cannot be published until the production signer and verifier are wired."
+            exit 1
+          fi

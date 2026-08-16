@@ -141,3 +141,24 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Pivot signing secrets — never commit
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+private/
+
+# Local publishing configuration
+*.local.json
+
+# Temporary publishing output
+.tmp/
+temp/
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
