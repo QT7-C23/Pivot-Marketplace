@@ -14,6 +14,17 @@ Pivot Marketplace uses an Ed25519 key pair:
 
 The private key is generated and stored outside Git repositories. It is never shipped with Pivot or uploaded as a marketplace artifact.
 
+The current official public identity is:
+
+- Key ID: `pivot-marketplace-2026-01`
+- Algorithm: Ed25519
+- Public-key SHA-256: `ea8676fe3125f41e659992541ceaecfca381b76d2b8b8536a4ad7a37e7cd75b6`
+- Manifest: [`keys/pivot-marketplace-2026-01.json`](../keys/pivot-marketplace-2026-01.json)
+
+The manifest is public verification material, not a secret. Repository CI
+strictly validates its fields, key type and fingerprint and rejects private-key
+markers.
+
 ## Catalog verification
 
 Before Pivot accepts a catalog snapshot, Main must:
@@ -57,4 +68,8 @@ Routine rotation must overlap old and new trust roots through a reviewed client 
 
 ## Publication state
 
-No production key identifier, public key, or signed `catalog.json` is committed during repository initialization. Those artifacts are published only after the signer, independent verifier, package lifecycle, and recovery tests are ready.
+The official public key and Key ID are published so clients and reviewers can
+confirm the pinned trust identity. No signed `catalog.json` or installable
+package feed is published during initialization. Those artifacts remain blocked
+until the independent verifier, package lifecycle, and recovery tests are
+ready.

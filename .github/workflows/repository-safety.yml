@@ -25,6 +25,13 @@ jobs:
           test -f SECURITY.md
           test -f CONTRIBUTING.md
           test -f docs/TRUST-MODEL.md
+          test -f keys/pivot-marketplace-2026-01.json
+          test -f scripts/verify-public-key-manifest.mjs
+
+      - name: Verify the official public-key manifest
+        run: |
+          node --test tests/*.test.mjs
+          node scripts/verify-public-key-manifest.mjs
 
       - name: Reject tracked signing secrets
         shell: bash
@@ -39,6 +46,24 @@ jobs:
 
           if git grep -n -I -E -- 'BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY' -- .; then
             echo "Private-key material detected in tracked content."
+            exit 1
+          fi
+
+      - name: Reject Pivot application source and release binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          forbidden_source="$(git ls-files | grep -E '^(src/(main|renderer|shared|publisher)/|electron\.vite\.config\.)' || true)"
+          if [[ -n "$forbidden_source" ]]; then
+            echo "Pivot application source belongs in its separate repository:"
+            echo "$forbidden_source"
+            exit 1
+          fi
+
+          forbidden_binaries="$(git ls-files '*.exe' '*.dll' '*.node' '*.asar' '*.msi' '*.appx')"
+          if [[ -n "$forbidden_binaries" ]]; then
+            echo "Application and native binaries must not be tracked here:"
+            echo "$forbidden_binaries"
             exit 1
           fi
 

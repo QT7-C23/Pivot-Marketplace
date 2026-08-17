@@ -16,6 +16,12 @@ When production publishing is enabled, this repository will provide:
 - compatibility and integrity information;
 - public documentation for publishers and reviewers.
 
+The official verification identity is now published at
+[`keys/pivot-marketplace-2026-01.json`](keys/pivot-marketplace-2026-01.json).
+It contains only the Ed25519 public key and reviewed SHA-256 fingerprint;
+possession of it does not grant publishing authority. The production catalog
+remains unpublished.
+
 Extension archives should be distributed as release artifacts instead of being committed as opaque binaries to the default branch.
 
 ## Trust model
@@ -33,6 +39,9 @@ See [Trust Model](docs/TRUST-MODEL.md) for the publication and key-management bo
 
 ```text
 catalog.json          Signed production catalog (not published yet)
+keys/                 Public verification identities; never private keys
+scripts/              Repository-only public-manifest validation tooling
+tests/                Repository safety tests; not Pivot application tests
 docs/                 Public trust and publishing documentation
 .github/              Repository ownership and automation policy
 README.md              Repository status and entry point
@@ -47,6 +56,9 @@ The absence of `catalog.json` is deliberate until the signing and package-verifi
 The marketplace is not accepting public package submissions during initialization. Documentation, validation, security, and publishing-tool improvements may be proposed under the rules in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Never submit private keys, API tokens, passwords, `.env` files, or unpublished package credentials.
+
+Pivot desktop application source is maintained in a separate repository and
+must not be copied into this distribution-metadata repository.
 
 ## Security
 
