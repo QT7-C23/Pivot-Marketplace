@@ -1,0 +1,8 @@
+{
+  "algorithm": "ed25519",
+  "createdAt": "2026-08-16T21:19:33.572Z",
+  "keyId": "pivot-marketplace-2026-01",
+  "publicKeyFingerprint": "ea8676fe3125f41e659992541ceaecfca381b76d2b8b8536a4ad7a37e7cd75b6",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA1+PTlOomL8YLqPSvWFhpgW7bLobYxzWUO8P8TWydFKg=\n-----END PUBLIC KEY-----\n",
+  "schemaVersion": 1
+}
