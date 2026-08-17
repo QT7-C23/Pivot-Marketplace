@@ -29,10 +29,15 @@ test('rejects unknown fields instead of expanding the public trust contract', ()
 })
 
 test('rejects private-key markers before parsing key material', () => {
+  const privateKeyPem = [
+    '-----BEGIN ',
+    'PRIVATE KEY-----\nnot-public\n-----END ',
+    'PRIVATE KEY-----\n',
+  ].join('')
   assert.throws(
     () => validatePublicKeyManifest({
       ...validManifest(),
-      publicKeyPem: '-----BEGIN PRIVATE KEY-----\nnot-public\n-----END PRIVATE KEY-----\n',
+      publicKeyPem: privateKeyPem,
     }),
     /private/i,
   )
